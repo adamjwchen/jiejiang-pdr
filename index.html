@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>參考價目與預約流程 — 捷匠PDR</title>
+<meta name="description" content="捷匠PDR 免烤漆凹痕修復：透明參考價目、線上試算、免費到店評估。">
+<style>
+  :root{
+    --bg:#0d0e12; --bg2:#14161c; --card:#181b23; --line:#262b36;
+    --text:#eef1f6; --muted:#9aa3b2; --dim:#6b7484;
+    --amber:#f2a93b; --amber-d:#c77f16; --green:#3ecf8e; --red:#ff6b6b;
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(13,14,18,.88);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:800;font-size:1.25rem;letter-spacing:.06em}
+  .logo b{color:var(--amber)}
+  nav ul{display:flex;gap:22px;list-style:none;font-size:.9rem;color:var(--muted)}
+  nav ul a{text-decoration:none;transition:color .2s}
+  nav ul a:hover{color:var(--amber)}
+  .btn{display:inline-block;background:var(--amber);color:#151005;font-weight:700;
+    padding:12px 28px;border-radius:999px;text-decoration:none;border:none;cursor:pointer;
+    font-size:1rem;transition:transform .15s, box-shadow .15s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(242,169,59,.35)}
+  .btn.ghost{background:transparent;color:var(--amber);border:1.5px solid var(--amber)}
+  .btn.small{padding:8px 20px;font-size:.9rem}
+  @media(max-width:760px){nav ul{display:none}}
+  /* ---------- hero ---------- */
+  header.hero{padding:96px 0 72px;text-align:center;
+    background:radial-gradient(900px 480px at 50% -80px, rgba(242,169,59,.14), transparent 70%)}
+  .eyebrow{color:var(--amber);font-weight:700;letter-spacing:.28em;font-size:.82rem;margin-bottom:18px}
+  h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.3;font-weight:800;margin-bottom:18px}
+  h1 .hl{color:var(--amber)}
+  .lede{color:var(--muted);max-width:640px;margin:0 auto 34px;font-size:1.06rem}
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  /* ---------- sections ---------- */
+  section{padding:72px 0;border-top:1px solid var(--line)}
+  .kicker{color:var(--amber);font-weight:700;letter-spacing:.22em;font-size:.8rem;margin-bottom:12px}
+  h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;margin-bottom:14px;line-height:1.4}
+  .sub{color:var(--muted);max-width:720px;margin-bottom:40px}
+  /* ---------- flow steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;position:relative}
+  .step .n{font-size:2.4rem;font-weight:800;color:var(--amber);opacity:.9;line-height:1;margin-bottom:12px}
+  .step h3{font-size:1.12rem;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:.94rem}
+  .step .arrow{position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:1.4rem;z-index:2}
+  .step:last-child .arrow{display:none}
+  @media(max-width:820px){.step .arrow{display:none}}
+  /* ---------- three factors ---------- */
+  .factors{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:44px}
+  .factor{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px}
+  .factor .icon{width:52px;height:52px;border-radius:14px;background:rgba(242,169,59,.12);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .factor .tag{font-size:.75rem;letter-spacing:.2em;color:var(--dim);font-weight:700}
+  .factor h3{font-size:1.25rem;margin:6px 0 10px}
+  .factor p{color:var(--muted);font-size:.95rem}
+  .factor ul{list-style:none;margin-top:14px;font-size:.9rem;color:var(--muted)}
+  .factor ul li{padding:7px 0;border-top:1px dashed var(--line);display:flex;gap:10px}
+  .factor ul li:first-child{border-top:none}
+  .lvl{font-weight:800;white-space:nowrap}
+  .lvl.low{color:var(--green)} .lvl.mid{color:var(--amber)} .lvl.high{color:var(--red)}
+  table.compare{width:100%;border-collapse:collapse;font-size:.93rem;margin-top:8px}
+  table.compare th,table.compare td{padding:13px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  table.compare th{color:var(--dim);font-weight:600;font-size:.82rem;letter-spacing:.08em}
+  table.compare td:first-child{font-weight:700}
+  .tbl-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:6px 18px 14px}
+  /* ---------- calculator ---------- */
+  .calc{background:linear-gradient(180deg,var(--bg2),var(--bg));border:1px solid var(--line);
+    border-radius:20px;padding:8px;margin-top:8px}
+  .calc-inner{padding:34px clamp(18px,4vw,44px)}
+  .calc-step{margin-bottom:38px}
+  .calc-step h3{font-size:1.15rem;margin-bottom:6px}
+  .calc-step h3 .sn{display:inline-flex;width:30px;height:30px;border-radius:50%;background:var(--amber);
+    color:#151005;font-weight:800;align-items:center;justify-content:center;margin-right:10px;font-size:.95rem}
+  .calc-step .hint{color:var(--dim);font-size:.88rem;margin-bottom:16px}
+  .zone-label{font-size:.82rem;letter-spacing:.14em;color:var(--dim);font-weight:700;margin:18px 0 10px}
+  .zone-label i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:baseline}
+  .parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .part{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px 10px;
+    text-align:center;cursor:pointer;transition:all .18s;font-size:.95rem}
+  .part small{display:block;color:var(--dim);font-size:.78rem;margin-top:4px}
+  .part:hover{border-color:var(--amber)}
+  .part.on{border-color:var(--amber);background:rgba(242,169,59,.1);box-shadow:0 0 0 1px var(--amber)}
+  .part.on small{color:var(--amber)}
+  .size-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .size-row input{width:130px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+    color:var(--text);font-size:1.3rem;font-weight:700;padding:12px 16px;text-align:center;outline:none;
+    touch-action:manipulation;-webkit-user-select:text;user-select:text}
+  .size-row input:focus{border-color:var(--amber)}
+  .size-quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .size-quick button{background:var(--card);border:1.5px solid var(--line);border-radius:999px;
+    color:var(--muted);padding:7px 16px;font-size:.88rem;cursor:pointer;touch-action:manipulation;transition:all .18s}
+  .size-quick button:hover{border-color:var(--amber);color:var(--text)}
+  .size-quick button.on{border-color:var(--amber);color:var(--amber);background:rgba(242,169,59,.1)}
+  .size-tiers{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:.82rem;color:var(--dim)}
+  .size-tiers span{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  .mod-group{font-size:.85rem;letter-spacing:.12em;color:var(--dim);font-weight:700;margin:20px 0 10px}
+  .mods{display:flex;flex-wrap:wrap;gap:10px}
+  .mod{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:9px 18px;
+    cursor:pointer;font-size:.92rem;transition:all .18s;user-select:none}
+  .mod b{color:var(--amber);font-weight:700;margin-left:6px}
+  .mod:hover{border-color:var(--amber)}
+  .mod.on{background:rgba(242,169,59,.14);border-color:var(--amber);box-shadow:0 0 0 1px var(--amber)}
+  .result{margin-top:10px;background:#101219;border:1px solid var(--amber);border-radius:var(--radius);
+    padding:30px clamp(20px,4vw,40px)}
+  .result .rowline{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .result .total-label{color:var(--muted);font-size:.95rem}
+  .result .total{font-size:clamp(2.2rem,6vw,3.4rem);font-weight:800;color:var(--amber);line-height:1.2}
+  .result .breakdown{margin-top:18px;font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
+  .result .breakdown div{display:flex;justify-content:space-between;padding:4px 0}
+  .result .formula{margin-top:12px;font-size:.82rem;color:var(--dim)}
+  .result .warn{margin-top:14px;font-size:.85rem;color:var(--dim);background:rgba(242,169,59,.06);
+    border:1px dashed var(--line);border-radius:10px;padding:12px 16px}
+  .calc-actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  /* ---------- promise ---------- */
+  .promise{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:34px clamp(22px,4vw,44px);display:grid;gap:18px}
+  .promise h3{font-size:1.3rem}
+  .promise h3 .pct{color:var(--amber);font-size:2rem;font-weight:800;margin-right:8px}
+  .promise p{color:var(--muted)}
+  .promise ul{list-style:none;display:grid;gap:10px;margin-top:6px}
+  .promise ul li{display:flex;gap:12px;color:var(--muted);font-size:.95rem}
+  .promise ul li::before{content:"✓";color:var(--green);font-weight:800}
+  /* ---------- faq ---------- */
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  summary{padding:18px 22px;cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--amber);font-size:1.3rem;font-weight:400}
+  details[open] summary::after{content:"−"}
+  details .a{padding:0 22px 20px;color:var(--muted);font-size:.95rem}
+  /* ---------- footer ---------- */
+  footer{padding:64px 0 48px;text-align:center}
+  footer .big{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:14px}
+  footer p{color:var(--muted);margin-bottom:28px}
+  .contact-cards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 26px;font-size:.95rem}
+  .ccard b{color:var(--amber)}
+  .fine{color:var(--dim);font-size:.8rem;margin-top:36px}
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+  .rv.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">捷匠<b>PDR</b></div>
+    <ul>
+      <li><a href="#how">如何估價</a></li>
+      <li><a href="#factors">價格三要素</a></li>
+      <li><a href="#calc">線上試算</a></li>
+      <li><a href="#book">預約流程</a></li>
+      <li><a href="#faq">常見問題</a></li>
+    </ul>
+    <a class="btn small" href="#book">免費評估</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">捷匠PDR · 免烤漆凹痕修復</div>
+    <h1>凹痕修復，<span class="hl">先看懂價格</span></h1>
+    <p class="lede">每一處凹痕的位置、深淺、大小都不一樣，所以沒有一口價。我們把影響報價的因素全部攤開來講——看完，你就知道錢花在哪裡。</p>
+    <div class="cta-row">
+      <a class="btn" href="#calc">開始試算參考價</a>
+      <a class="btn ghost" href="#book">預約免費評估</a>
+    </div>
+  </div>
+</header>
+
+<!-- 1. 估價流程 -->
+<section id="how">
+  <div class="wrap">
+    <div class="kicker rv">我們如何估價</div>
+    <h2 class="rv">三個步驟，從看到修好</h2>
+    <p class="sub rv">報價不是喊價。我們的流程很固定：先看清楚凹痕，再談價格，最後才施工——順序不顛倒，價格不事後加。</p>
+    <div class="steps">
+      <div class="step rv"><div class="n">1</div><h3>免費評估</h3><p>LINE 傳照片先做初步判斷，或直接到店。技師在專業燈板下實際檢視後，才給出確定報價。</p><div class="arrow">→</div></div>
+      <div class="step rv"><div class="n">2</div><h3>預約排單</h3><p>價格、工時、能修復到什麼程度都談清楚，你點頭了，我們才排時間。沒壓力，不強迫。</p><div class="arrow">→</div></div>
+      <div class="step rv"><div class="n">3</div><h3>施作交車</h3><p>全程不動原漆、不補土不烤漆。多數案件當日可交車，現場燈板下驗收，滿意再離開。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 三要素 -->
+<section id="factors">
+  <div class="wrap">
+    <div class="kicker rv">影響價格的三要素</div>
+    <h2 class="rv">看懂這三件事，就看懂報價單</h2>
+    <p class="sub rv">PDR 的報價，本質上是「修復工時」加上「還原難度」。而這兩件事，由下面三個要素共同決定。</p>
+    <div class="factors">
+      <div class="factor rv">
+        <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f2a93b" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
+        <div class="tag">01 · POSITION</div><h3>凹痕位置</h3>
+        <p>關鍵只有一個：工具能不能從鈑件背面頂到它。頂得到，用頂拉工法又快又乾淨；頂不到，只能用膠拉從正面慢慢拉，工時直接拉長。</p>
+        <ul>
+          <li><span class="lvl low">好處理</span>鈑件平整、背面無遮蔽的開闊區域</li>
+          <li><span class="lvl mid">次之</span>靠近結構、樑柱或下緣，工具進出受限</li>
+          <li><span class="lvl high">最費工</span>鈑件邊緣、接合處、雙層鈑件，只能膠拉</li>
+        </ul>
+      </div>
+      <div class="factor rv">
+        <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f2a93b" stroke-width="2"><path d="M3 18c4-1 5-8 9-8s5 7 9 6"/><path d="M12 4v3" stroke-dasharray="2 2"/></svg></div>
+        <div class="tag">02 · DEPTH</div><h3>凹痕深度</h3>
+        <p>這裡說的「深」，指的是凹痕中心有多尖銳。淺而圓的凹痕，金屬只是暫時變形；又深又尖的，中心點的金屬已經被拉伸，能還原的程度先天就比較有限。</p>
+        <ul>
+          <li><span class="lvl low">淺而圓</span>最常見，也最好處理</li>
+          <li><span class="lvl mid">中等深度</span>需要較多工時細修</li>
+          <li><span class="lvl high">深而尖銳</span>難度最高，價格反映在工時與技術</li>
+        </ul>
+      </div>
+      <div class="factor rv">
+        <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f2a93b" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16" stroke-dasharray="3 2"/></svg></div>
+        <div class="tag">03 · SIZE</div><h3>凹痕大小</h3>
+        <p>面積主要影響的是工時：範圍越大，來回修整的時間越長。但大小不是唯一標準——一個大而平緩的凹痕，有時反而比小而尖銳的更好處理。</p>
+        <ul>
+          <li><span class="lvl low">小面積</span>工時短，價格相對親切</li>
+          <li><span class="lvl mid">中等面積</span>工時適中</li>
+          <li><span class="lvl high">大面積</span>需要較長工時完整修整</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tbl-wrap rv">
+      <table class="compare">
+        <tr><th>凹痕類型</th><th>修復難度</th><th>所需工時</th><th>價格帶</th></tr>
+        <tr><td>淺而小</td><td><span class="lvl low">低</span></td><td>短</td><td>$</td></tr>
+        <tr><td>淺但面積大</td><td><span class="lvl low">低</span></td><td>適中</td><td>$$</td></tr>
+        <tr><td>深而尖銳、面積小</td><td><span class="lvl high">高</span></td><td>適中</td><td>$$$</td></tr>
+        <tr><td>深但平緩、面積大</td><td><span class="lvl mid">適中</span></td><td>長</td><td>$$$</td></tr>
+      </table>
+      <p style="color:var(--dim);font-size:.85rem;margin-top:10px">重點：決定價格的是「難易度」，而不只是大小。大而平緩的凹痕，報價可能和小而尖銳的相去不遠。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 互動估價器 -->
+<section id="calc">
+  <div class="wrap">
+    <div class="kicker rv">參考收費試算</div>
+    <h2 class="rv">動手點一點，先有個底</h2>
+    <p class="sub rv">選部件、輸尺寸、點加成因子，系統即時算出參考價。下面所有金額都是<strong>示範費率</strong>，正式報價一律以免費現場評估為準。</p>
+    <div class="calc rv"><div class="calc-inner">
+
+      <div class="calc-step" id="step1">
+        <h3><span class="sn">1</span>選擇凹痕所在的部件</h3>
+        <p class="hint">不同區域施工難度不同，基礎參考價也不同。點一下即可選擇。</p>
+        <div class="zone-label"><i style="background:#3ecf8e"></i>易修區 · 基礎價 NT$1,500 起</div>
+        <div class="parts" data-zone="easy"></div>
+        <div class="zone-label"><i style="background:#f2a93b"></i>中難度區 · 基礎價 NT$2,500 起</div>
+        <div class="parts" data-zone="mid"></div>
+        <div class="zone-label"><i style="background:#ff6b6b"></i>高難度區 · 基礎價 NT$4,000 起</div>
+        <div class="parts" data-zone="hard"></div>
+      </div>
+
+      <div class="calc-step">
+        <h3><span class="sn">2</span>輸入凹痕大小</h3>
+        <p class="hint">量凹痕最長邊的長度，直接輸入數字（公分）即可。</p>
+        <div class="size-row">
+          <label for="sizeInput" style="position:absolute;left:-9999px">凹痕尺寸（公分）</label>
+          <input type="text" inputmode="decimal" id="sizeInput" placeholder="0" autocomplete="off" enterkeyhint="done" aria-label="凹痕尺寸（公分）">
+          <span style="color:var(--muted)">公分 cm</span>
+        </div>
+        <div class="size-quick" id="sizeQuick">
+          <button type="button" data-cm="3">3cm</button>
+          <button type="button" data-cm="5">5cm</button>
+          <button type="button" data-cm="10">10cm</button>
+          <button type="button" data-cm="15">15cm</button>
+          <button type="button" data-cm="20">20cm</button>
+        </div>
+        <div class="size-tiers">
+          <span>≤3cm ×1.0</span><span>3–8cm ×1.3</span><span>8–15cm ×1.6</span><span>＞15cm ×2.0</span>
+        </div>
+      </div>
+
+      <div class="calc-step">
+        <h3><span class="sn">3</span>點選適用的加成因子</h3>
+        <p class="hint">同一個凹痕可能同時符合多項，每點一項就在基礎價上加成一次。</p>
+        <div id="modGroups"></div>
+      </div>
+
+      <div class="result">
+        <div class="rowline">
+          <div><div class="total-label">估算參考價（單一凹痕）</div>
+          <div class="total" id="totalPrice">NT$ —</div></div>
+          <div class="calc-actions">
+            <button class="btn ghost small" id="resetBtn" type="button">重新試算</button>
+            <a class="btn small" href="#book">預約免費評估</a>
+          </div>
+        </div>
+        <div class="breakdown" id="breakdown"><div><span>請先在上方第 1 步選擇部件</span><span></span></div></div>
+        <div class="formula" id="formula"></div>
+        <div class="warn">＊ 以上為單一凹痕之參考試算，實際價格依凹痕深度、位置、數量及車款鈑件特性而定。<strong>最終報價以免費現場評估為準，現場報價即為完工價，不事後加價。</strong></div>
+      </div>
+
+    </div></div>
+  </div>
+</section>
+
+<!-- 4. 誠實承諾 -->
+<section id="promise">
+  <div class="wrap">
+    <div class="kicker rv">捷匠的承諾</div>
+    <h2 class="rv">先說清楚，再動手</h2>
+    <p class="sub rv">凹痕修復沒有魔法。我們寧可在評估時多說一點，也不在交車時讓你失望。</p>
+    <div class="promise rv">
+      <h3><span class="pct">95%</span>關於修復程度，我們說實話</h3>
+      <p>金屬一旦過度延展，就有物理上的極限。再厲害的技師，也無法保證每一處凹痕都回到 100%——多數案件可以達到 95% 以上的還原度，但評估時我們會先告訴你：這一處，大概能到哪裡。</p>
+      <ul>
+        <li>免費評估：到店檢視不收費，不強迫消費</li>
+        <li>報價透明：現場談定的價格就是完工價，不事後加價</li>
+        <li>誠實告知極限：修不到的程度先講，做不到的不硬接</li>
+        <li>原漆保留：不補土、不烤漆，你的原漆就是保值關鍵</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 預約流程 -->
+<section id="book">
+  <div class="wrap">
+    <div class="kicker rv">預約流程</div>
+    <h2 class="rv">四個步驟，回到平整</h2>
+    <p class="sub rv">從第一次聯繫到交車，流程固定、時間透明。</p>
+    <div class="steps">
+      <div class="step rv"><div class="n">01</div><h3>傳照片初評</h3><p>透過 LINE 或表單傳送凹痕照片，技師先給初步判斷與價格區間，免費。</p><div class="arrow">→</div></div>
+      <div class="step rv"><div class="n">02</div><h3>到店免費估價</h3><p>實車在燈板下檢視，確認修復範圍與確定報價。營業時間內免預約可直接到店。</p><div class="arrow">→</div></div>
+      <div class="step rv"><div class="n">03</div><h3>預約施工</h3><p>選擇方便的時段與據點。施工前會以電話再次確認赴約時間。</p><div class="arrow">→</div></div>
+      <div class="step rv"><div class="n">04</div><h3>驗收交車</h3><p>在燈板下逐處驗收，確認平整才交車。多數案件當日即可完成。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker rv">常見問題</div>
+    <h2 class="rv">先問先答</h2>
+    <p class="sub rv">這些是客戶最常問的幾題，先一次講清楚。</p>
+    <div class="rv">
+    <details open><summary>線上可以直接報價嗎？</summary><div class="a">不行。凹痕的深淺、位置、鈑件材質與烤漆狀況，都必須在專業燈光下實際檢視才能判斷。線上照片只能給初步區間，確定金額一定是免費現場評估之後才報。</div></details>
+    <details><summary>估價要收費嗎？需要預約嗎？</summary><div class="a">估價完全免費。營業時間內可以直接到店，不需預約；若想先傳照片初評，也歡迎透過 LINE 或表單聯繫。</div></details>
+    <details><summary>修完之後看得出來嗎？</summary><div class="a">多數案件可還原到 95% 以上，在一般光線下幾乎看不出來。但若金屬已過度延展，評估時我們會先誠實告知能達到的程度，不會過度承諾。</div></details>
+    <details><summary>會傷到原漆嗎？</summary><div class="a">不會。PDR 全程不補土、不烤漆、不打磨，就是為了完整保留原漆——這也是它比傳統鈑烤更保值的關鍵原因。</div></details>
+    <details><summary>施工大概要留車多久？</summary><div class="a">單一凹痕多數 1–3 小時可完成，當日交車；多處或高難度案件會在評估時明確告知所需時間。</div></details>
+    <details><summary>哪些情況不適合做 PDR？</summary><div class="a">烤漆已破損見底漆、凹痕伴隨嚴重刮傷需烤漆處理，或鈑件曾大面積補土，都可能不適合。評估時技師會直接判斷並建議你最划算的做法，包括轉介傳統鈑烤。</div></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="big rv">準備好讓愛車回到平整了嗎？</div>
+    <p class="rv">第一步永遠免費：傳張照片，或直接過來，我們在燈板下見。</p>
+    <div class="contact-cards rv">
+      <div class="ccard">預約專線<br><b>02-XXXX-XXXX</b>（請填入）</div>
+      <div class="ccard">LINE 官方帳號<br><b>@jiejiang</b>（請填入）</div>
+      <div class="ccard">營業時間<br><b>10:00–19:00</b>（請填入）</div>
+    </div>
+    <a class="btn" href="#calc">再試算一次參考價</a>
+    <div class="fine">捷匠PDR © 2026 · 本頁為功能示範版（demo），金額為示範費率，正式上線前請填入實際聯繫資訊與定價</div>
+  </div>
+</footer>
+
+<script>
+/* ============ 捷匠PDR 試算引擎（示範費率，上線前請換成實際定價） ============ */
+const PARTS = [
+  // easy
+  {id:'hood',   name:'引擎蓋',     zone:'easy', base:1500},
+  {id:'trunk',  name:'行李廂蓋',   zone:'easy', base:1500},
+  {id:'fender', name:'前葉子板',   zone:'easy', base:1500},
+  {id:'door',   name:'車門（中段）', zone:'easy', base:1500},
+  // mid
+  {id:'rfender',name:'後葉子板',   zone:'mid',  base:2500},
+  {id:'roof',   name:'車頂',       zone:'mid',  base:2500},
+  {id:'bumper', name:'保桿（塑膠件）', zone:'mid', base:2500},
+  // hard
+  {id:'pillar', name:'A柱 / C柱',  zone:'hard', base:4000},
+  {id:'edge',   name:'鈑件邊緣區', zone:'hard', base:4000},
+  {id:'frame',  name:'車門邊框',   zone:'hard', base:4000},
+];
+const MODS = [
+  {group:'位置與通道', items:[
+    {id:'m_edge',  name:'凹痕在鈑件邊緣',      pct:25},
+    {id:'m_line',  name:'位於車身折線／稜線上', pct:30},
+    {id:'m_block', name:'背面有結構或雙層鈑件', pct:25},
+    {id:'m_rni',   name:'需拆內裝或相關零件',   pct:20},
+  ]},
+  {group:'損傷程度', items:[
+    {id:'m_mid',   name:'中度凹痕',  pct:15},
+    {id:'m_deep',  name:'深層凹痕',  pct:30},
+    {id:'m_crease',name:'帶有摺痕',  pct:25},
+  ]},
+  {group:'材質與特殊', items:[
+    {id:'m_alu',   name:'鋁合金鈑件',   pct:40},
+    {id:'m_hss',   name:'高張力鋼板',   pct:30},
+    {id:'m_glue',  name:'需以膠拉工法', pct:20},
+  ]},
+];
+const state = { part:null, size:0, mods:new Set() };
+const $ = s => document.querySelector(s);
+
+function sizeMult(cm){
+  if(!cm || cm<=0) return 1.0;
+  if(cm<=3)  return 1.0;
+  if(cm<=8)  return 1.3;
+  if(cm<=15) return 1.6;
+  return 2.0;
+}
+function fmt(n){ return 'NT$ ' + n.toLocaleString('en-US'); }
+
+function calc(){
+  const totalEl = $('#totalPrice'), bd = $('#breakdown'), fm = $('#formula');
+  if(!state.part){
+    totalEl.textContent = 'NT$ —';
+    bd.innerHTML = '<div><span>請先在上方第 1 步選擇部件</span><span></span></div>';
+    fm.textContent = '';
+    return;
+  }
+  const base = state.part.base;
+  const mult = sizeMult(state.size);
+  let pctSum = 0; const lines = [];
+  MODS.forEach(g => g.items.forEach(m => {
+    if(state.mods.has(m.id)){ pctSum += m.pct; lines.push({t:m.name, v:'+'+m.pct+'%'}); }
+  }));
+  let total = Math.round(base * mult * (1 + pctSum/100) / 10) * 10;
+  totalEl.textContent = fmt(total);
+  let html = '<div><span>基礎價（'+state.part.name+'）</span><span>'+fmt(base)+'</span></div>';
+  if(state.size>0) html += '<div><span>尺寸 '+state.size+'cm</span><span>× '+mult.toFixed(1)+'</span></div>';
+  lines.forEach(l => html += '<div><span>'+l.t+'</span><span style="color:var(--amber)">'+l.v+'</span></div>');
+  if(!lines.length && !state.size) html += '<div><span>尚未選擇加成因子</span><span></span></div>';
+  bd.innerHTML = html;
+  fm.textContent = '公式：'+fmt(base)+' × '+mult.toFixed(1)+'（尺寸係數） × '+(1+pctSum/100).toFixed(2)+'（加成）= '+fmt(total);
+}
+
+/* render parts */
+Object.entries({easy:'易修區', mid:'中難度區', hard:'高難度區'}).forEach(([z])=>{
+  const box = document.querySelector('.parts[data-zone="'+z+'"]');
+  PARTS.filter(p=>p.zone===z).forEach(p=>{
+    const d = document.createElement('div');
+    d.className='part'; d.dataset.id=p.id;
+    d.innerHTML = p.name+'<small>NT$ '+p.base.toLocaleString()+' 起</small>';
+    d.onclick = ()=>{
+      document.querySelectorAll('.part').forEach(x=>x.classList.remove('on'));
+      d.classList.add('on');
+      state.part = p; calc();
+    };
+    box.appendChild(d);
+  });
+});
+/* render mods */
+const mg = $('#modGroups');
+MODS.forEach(g=>{
+  const t = document.createElement('div'); t.className='mod-group'; t.textContent=g.group; mg.appendChild(t);
+  const w = document.createElement('div'); w.className='mods';
+  g.items.forEach(m=>{
+    const c = document.createElement('div'); c.className='mod';
+    c.innerHTML = m.name+'<b>+'+m.pct+'%</b>';
+    c.onclick = ()=>{ c.classList.toggle('on');
+      c.classList.contains('on') ? state.mods.add(m.id) : state.mods.delete(m.id); calc(); };
+    w.appendChild(c);
+  });
+  mg.appendChild(w);
+});
+/* size input */
+const sizeInput = $('#sizeInput');
+sizeInput.addEventListener('input', e=>{
+  const clean = e.target.value.replace(/[^0-9.]/g,'').replace(/(\..*)\./g,'$1');
+  if(clean !== e.target.value) e.target.value = clean;
+  state.size = Math.max(0, parseFloat(clean)||0); calc();
+  document.querySelectorAll('#sizeQuick button').forEach(b=>
+    b.classList.toggle('on', parseFloat(b.dataset.cm)===state.size));
+});
+sizeInput.addEventListener('focus', e=>{ e.target.select(); });
+/* quick-pick chips */
+document.querySelectorAll('#sizeQuick button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#sizeQuick button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    sizeInput.value = b.dataset.cm;
+    state.size = parseFloat(b.dataset.cm); calc();
+  });
+});
+/* reset */
+$('#resetBtn').onclick = ()=>{
+  state.part=null; state.size=0; state.mods.clear();
+  document.querySelectorAll('.part.on,.mod.on,#sizeQuick button.on').forEach(x=>x.classList.remove('on'));
+  $('#sizeInput').value=''; calc();
+  document.querySelector('#calc').scrollIntoView({behavior:'smooth'});
+};
+/* scroll reveal */
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+calc();
+</script>
+</body>
+</html>
